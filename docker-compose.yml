@@ -10,7 +10,7 @@ services:
     volumes:
       - ./html:/usr/share/nginx/html:ro
     ports:
-      - "80:80"
+      - "75:75"
     restart: always
 
 # Usage:
