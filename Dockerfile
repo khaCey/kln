@@ -1,7 +1,9 @@
 FROM nginx:alpine
 
-# Copy the HTML files into the container
-COPY . /usr/share/nginx/html
+# Copy initial HTML into Nginx’s web root
+# (during development, docker-compose will mount ./html over this)
+COPY html/ /usr/share/nginx/html/
 
-# Expose port 75
-EXPOSE 75
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
