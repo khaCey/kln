@@ -1,52 +1,30 @@
 # docker-compose.yml
-# -----------------------------------------
-# Git repo & Dockerfile location:
-# • Place BOTH docker-compose.yml and your Dockerfile in the same directory (e.g. repo root).
-# • If your Dockerfile lives elsewhere, adjust the paths below:
-#     build:
-#       context: <path-to-dockerfile-directory>
-#       dockerfile: <relative-path-to-Dockerfile>
-#
-# Example for Dockerfile in subfolder "docker/":
-#   build:
-#     context: .
-#     dockerfile: docker/Dockerfile
-#
-# Port configuration:
-# • By default, this maps container port 80 to host port 8080.
-# • To override, create a `.env` file alongside this compose and set:
-#      HOST_PORT=3000    # or any free port you prefer
-#
+# =====================================
+# Single port mapping to avoid duplicates.
+# Using host port 75 mapped to container port 80.
+
 version: '3.8'
 
 services:
   static-site:
-    # Build configuration (edit context/dockerfile if needed)
+    # Build from the local Dockerfile
     build:
       context: .
       dockerfile: Dockerfile
     image: kaelnoer:latest
 
-    # Live reload: mount local HTML directory into container
+    # Mount local HTML directory for live-reload
     volumes:
       - ./html:/usr/share/nginx/html:ro
 
-    # Port mapping: container 80 → host ${HOST_PORT:-8080}
+    # Only one port mapping. Change host port as needed.
     ports:
-      # Map container port 80 to host port. Default is ${HOST_PORT:-8080}.
-      # To use port 75, either:
-      #  • Create a .env file with HOST_PORT=75
-      #  • Or change this line to "75:80"
-      - "${HOST_PORT:-8080}:80"
-      - "${HOST_PORT:-8080}:80"
+      - "75:80"
 
     restart: always
 
-# Usage (local or CLI builds):
-# 1. Position this compose file and Dockerfile appropriately in your project.
-# 2. (Optional) Create a `.env` file next to this compose:
-#      HOST_PORT=3000
-# 3. Run `docker-compose up -d --build` to build and start the service.
-# 4. On HTML file changes (in ./html), simply:
-#      docker-compose restart static-site
-#    Nginx will serve updated files instantly due to the volume mount.
+# Usage:
+# 1. Ensure this file and Dockerfile are in the same repo folder.
+# 2. Commit to Git and set this path in Portainer Stack settings.
+# 3. Deploy or redeploy the stack; your site listens on port 75.
+# 4. On HTML changes (in ./html): docker-compose restart static-site
