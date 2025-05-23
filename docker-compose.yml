@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  static-site:
+    # Live-reload setup: mount local HTML folder into the container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: kaelnoer:latest
+    volumes:
+      - ./html:/usr/share/nginx/html:ro
+    ports:
+      - "80:80"
+    restart: always
+
+# Usage:
+# 1. Place your HTML files in the `html/` directory next to this compose file.
+# 2. Run `docker-compose up -d --build` once to build the image.
+# 3. For subsequent changes to `html/`, you only need to restart the container:
+#      docker-compose restart static-site
+#    (Because the volume is mounted, updated files are served immediately by Nginx.)
