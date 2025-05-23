@@ -19,7 +19,7 @@ services:
 
     # Only one port mapping. Change host port as needed.
     ports:
-      - "3000"
+      - "75:80"
 
     restart: always
 

@@ -4,6 +4,6 @@ FROM nginx:alpine
 # (during development, docker-compose will mount ./html over this)
 COPY html/ /usr/share/nginx/html/
 
-EXPOSE 3000
+EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
